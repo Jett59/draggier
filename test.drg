@@ -1,1 +1,2 @@
 consolifyln(hello world)
+consolifyf(hello world this is %s\n, draggier)
