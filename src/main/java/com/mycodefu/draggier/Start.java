@@ -9,6 +9,7 @@ import com.mycodefu.draggier.sintax.*;
 
 public class Start {
 	private static final Sintax[] commands = new Sintax[] {
+			new Consolify(),
 			new Consolifyln(),
 			new Consolifyf()
 	};

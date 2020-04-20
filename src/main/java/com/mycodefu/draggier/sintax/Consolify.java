@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 
 import com.mycodefu.draggier.compilation.CompilationException;
 
-public class Consolifyln implements Sintax {
-	private final Pattern pattern = Pattern.compile("consolifyln\\((.*?)\\)");
+public class Consolify implements Sintax{
+	Pattern pattern = Pattern.compile("consolify\\((.*?)\\)");
 
 	@Override
-	public boolean executeCommand(String line) throws CompilationException{
+	public boolean executeCommand(String line) throws CompilationException {
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()) {
 			String content = matcher.group(1);
@@ -19,7 +19,7 @@ public class Consolifyln implements Sintax {
 			}else {
 				throw new CompilationException("the argument "+content+" in the line "+line+" is not valid");
 			}
-			System.out.println(content);
+			System.out.print(content);
 			return true;
 		}
 		return false;
