@@ -1,2 +1,3 @@
 consolifyln(hello world)
-consolifyf(hello world this is %s\n, draggier)
+consolifyf(%s this is %s\n, hello world, draggier)
+thisisatest

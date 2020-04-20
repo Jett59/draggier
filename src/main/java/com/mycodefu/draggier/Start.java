@@ -3,28 +3,28 @@ package com.mycodefu.draggier;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import com.mycodefu.draggier.compilation.CompilationException;
+import com.mycodefu.draggier.sintax.*;
 
 public class Start {
+	private static final Sintax[] commands = new Sintax[] {
+			new Consolifyln(),
+			new Consolifyf()
+	};
+
 public static void main(String[] args) throws Exception {
 	List<String> code = Files.readAllLines(Paths.get(args[0]));
-	Pattern printlnPattern = Pattern.compile("consolifyln\\((.*?)\\)");
-	Pattern printfPattern = Pattern.compile("consolifyf\\((.*?), (.*?)\\)");
 	for(String line : code) {
-	Matcher printlnMatcher = printlnPattern.matcher(line);
-			if(printlnMatcher.find()) {
-				String content = printlnMatcher.group(1);
-				content = content.replace("\\n", "\n");
-				System.out.println(content);
-			}
-			Matcher printfMatcher = printfPattern.matcher(line);
-			if(printfMatcher.find()) {
-				String text = printfMatcher.group(1);
-				String[] arguments = printfMatcher.group(2).split(", ");
-				text = text.replace("\\n", "\n");
-				System.out.printf(text, (Object[])arguments);
-			}
+		boolean lineHasCommand = false;
+	for(Sintax command : commands) {
+		if(command.executeCommand(line)) {
+			lineHasCommand = true;
+		}
+	}
+	if(!lineHasCommand) {
+		throw new CompilationException("the line "+line+" has no valid lines");
+	}
 }
 }
 }
