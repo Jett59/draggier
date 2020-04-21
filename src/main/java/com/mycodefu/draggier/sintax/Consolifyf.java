@@ -4,12 +4,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.mycodefu.draggier.compilation.CompilationException;
+import com.mycodefu.draggier.memory.MemoryStorage;
 
 public class Consolifyf implements Sintax{
 	private final Pattern pattern = Pattern.compile("consolifyf\\((.*?), (.*?)\\)");
 
 	@Override
-	public boolean executeCommand(String line) throws CompilationException {
+	public boolean executeCommand(String line, MemoryStorage memory) throws CompilationException {
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()) {
 			String text = matcher.group(1);

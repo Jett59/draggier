@@ -1,4 +1,4 @@
-var console> String = "hello world!"
-consolify("this is a test of draggier\n")
-consolifyln("this is testing the consolifyln function")
-consolifyf("%s this is %s speaking", "hello", "draggier")
+var console> String = "testing this variable thing\n" <var
+consolify(var=>console)
+consolifyln("testing the consolifyln function")
+consolifyf("%s this is %s the consolifyf function\n", "hello", "testing")

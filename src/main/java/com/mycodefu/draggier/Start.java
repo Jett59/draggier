@@ -27,7 +27,7 @@ public static void main(String[] args) throws Exception {
 			lineHasCommand = true;
 		}
 	for(Sintax command : commands) {
-		if(command.executeCommand(line)) {
+		if(command.executeCommand(line, memory)) {
 			lineHasCommand = true;
 			break;
 		}
