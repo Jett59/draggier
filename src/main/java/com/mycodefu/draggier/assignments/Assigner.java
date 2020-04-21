@@ -8,7 +8,7 @@ import com.mycodefu.draggier.memory.MemoryStorage;
 import com.mycodefu.draggier.variables.VariableType;
 
 public class Assigner {
-private static final Pattern pattern = Pattern.compile("var (.*?): (.*?) = (.*?)");
+private static final Pattern pattern = Pattern.compile("var (.*?)> (.*?) = (.*?)");
 
 public void assign(String name, VariableType type, String value, MemoryStorage memory) {
 	switch (type) {

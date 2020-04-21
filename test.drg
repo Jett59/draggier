@@ -1,4 +1,4 @@
-var console: String = "hello world!"
+var console> String = "hello world!"
 consolify("this is a test of draggier\n")
 consolifyln("this is testing the consolifyln function")
 consolifyf("%s this is %s speaking", "hello", "draggier")
