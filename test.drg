@@ -1,3 +1,4 @@
-consolifyln("hello world")
-consolify("hello world\n\n")
-consolifyf("%s this is %s\n", "hello world", "draggier")
+var console: String = "hello world!"
+consolify("this is a test of draggier\n")
+consolifyln("this is testing the consolifyln function")
+consolifyf("%s this is %s speaking", "hello", "draggier")
