@@ -13,6 +13,10 @@ private final Pattern reassignPattern = Pattern.compile("var=>(.*?):(.*?):(.*?) 
 
 public void declare (String name, VariableType type, String value, MemoryStorage memory) {
 	switch (type) {
+	case bool: {
+		memory.allocateBoolean(name, Boolean.parseBoolean(value));
+		break;
+	}
 	case integer: {
 		memory.allocateInt(name, Integer.parseInt(value));
 		break;
@@ -26,6 +30,10 @@ public void declare (String name, VariableType type, String value, MemoryStorage
 
 public void reassign (String name, VariableType type, String newValue, MemoryStorage memory) throws NumberFormatException, CompilationException {
 	switch (type) {
+	case bool: {
+		memory.replaceBoolean(name, Boolean.parseBoolean(newValue));
+		break;
+	}
 	case integer: {
 		memory.replaceInt(name, Integer.parseInt(newValue));
 		break;

@@ -16,6 +16,14 @@ public MemoryStorage(int capacity) {
 	nameToLocation = new HashMap<>();
 }
 
+public void allocateBoolean(String id, boolean value) {
+	nameToLocation.put(id.hashCode(), nextIndex);
+	memory.position(nextIndex);
+	memory.put(Objects.BOOL);
+	memory.put((byte)(value ? 1 : 0));
+	nextIndex = memory.position();
+}
+
 public void allocateInt(String id, int value) {
 	nameToLocation.put(id.hashCode(), nextIndex);
 	memory.position(nextIndex);
@@ -35,19 +43,34 @@ public void allocateString(String id, String value) {
 	nextIndex = memory.position();
 }
 
+public boolean getBoolean(String id) throws CompilationException {
+	int index = nameToLocation.get(id.hashCode());
+	memory.position(index);
+	byte type = memory.get();
+	if(type == Objects.BOOL) {
+		return memory.get() == 1;
+	}else if(type == Objects.STRING) {
+		return Boolean.parseBoolean(getString(id));
+	}else {
+		throw new CompilationException("the object "+id+"is not valid for the type boolean");
+	}
+}
+
 public int getInt(String id) throws CompilationException{
 	int index = nameToLocation.get(id.hashCode());
 	memory.position(index);
 	byte type = memory.get();
 	int length = memory.get();
+	if(type == Objects.INTEGER) {
 	if(length == 4) {
-		if(type == Objects.INTEGER) {
 		return memory.getInt();
-		}else {
-			throw new CompilationException("type mismatch: object "+id+"is not an integer");
-		}
 	}else {
-		throw new CompilationException("the object "+id+" does not exist or has no allocated bytes");
+		throw new CompilationException("the object "+id+" does not have the valid number of bytes for an int: 4");
+	}
+	}else if(type == Objects.STRING) {
+		return Integer.parseInt(getString(id));
+	}else {
+		throw new CompilationException("the object "+id+" is not valid for the type int");
 	}
 }
 
@@ -55,6 +78,9 @@ public String getString(String id) throws CompilationException{
 	int index = nameToLocation.get(id.hashCode());
 	memory.position(index);
 	byte type = memory.get();
+	if(type == Objects.BOOL) {
+		return Boolean.toString(getBoolean(id));
+	}
 	int length = (int)memory.get();
 	if(length != 0) {
 	String result;
@@ -74,6 +100,17 @@ public String getString(String id) throws CompilationException{
 	return result;
 	}else {
 		throw new CompilationException("the object "+id+" does not exist or has no allocated bytes");
+	}
+}
+
+public void replaceBoolean(String id, boolean newValue) throws CompilationException {
+	int index = nameToLocation.get(id.hashCode());
+	memory.position(index);
+	byte type = memory.get();
+	if(type == Objects.BOOL) {
+		memory.put((byte)(newValue ? 1 : 0));
+	}else {
+		throw new CompilationException("the object "+id+" cannot be replaced by a boolean");
 	}
 }
 
@@ -106,6 +143,10 @@ public void replaceString(String id, String newValue) throws CompilationExceptio
 	memory.position(index).put((byte)(0-length));
 	allocateString(id, newValue);
 	}
+	}else if(type == Objects.INTEGER) {
+		allocateInt(id, Integer.parseInt(newValue));
+	}else if(type == Objects.BOOL) {
+		allocateBoolean(id, Boolean.parseBoolean(newValue));
 	}else {
 		throw new CompilationException("the object "+id+" cannot be replaced by a String");
 	}
