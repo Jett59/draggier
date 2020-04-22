@@ -24,9 +24,10 @@ public void allocateInt(String id, int value) {
 }
 
 public void allocateString(String id, String value) {
+	byte[] bytes = value.getBytes();
 	nameToLocation.put(id.hashCode(), nextIndex);
 	memory.position(nextIndex);
-	memory.put((byte)value.length()).put(value.getBytes());
+	memory.put((byte)bytes.length).put(bytes);
 	nextIndex = memory.position();
 }
 
@@ -72,7 +73,8 @@ public void replaceString(String id, String newValue) throws CompilationExceptio
 	int index = nameToLocation.get(id.hashCode());
 	memory.position(index);
 	int length = memory.get();
-	if(length == newValue.length()) {
+	byte[] bytes = newValue.getBytes();
+	if(length == bytes.length) {
 		memory.put(newValue.getBytes());
 	}else {
 	memory.position(index).put((byte)(0-length));
