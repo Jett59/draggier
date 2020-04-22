@@ -4,3 +4,5 @@ var=>console:String:"testing reassignment" <var
 consolifyln(var=>console)
 var=>console:String:"12345678901234567890" <var
 consolifyf("%s this is %s the consolifyf function and here are some numbers: %s\n", "hello", "testing", var=>console)
+var number> integer = 103 <var
+consolify(var=>number)
