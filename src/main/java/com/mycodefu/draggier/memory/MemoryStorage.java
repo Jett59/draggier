@@ -72,7 +72,11 @@ public void replaceString(String id, String newValue) throws CompilationExceptio
 	int index = nameToLocation.get(id.hashCode());
 	memory.position(index);
 	int length = memory.get();
+	if(length == newValue.length()) {
+		memory.put(newValue.getBytes());
+	}else {
 	memory.position(index).put((byte)(0-length));
 	allocateString(id, newValue);
+	}
 }
 }

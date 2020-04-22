@@ -1,5 +1,6 @@
 var console> String = "testing the variable thing\n" <var
 consolify(var=>console)
-var=>console:String:"testing the reassignment and consolifyln functions" <var
+var=>console:String:"testing reassignment" <var
 consolifyln(var=>console)
-consolifyf("%s this is %s the consolifyf function\n", "hello", "testing")
+var=>console:String:"12345678901234567890" <var
+consolifyf("%s this is %s the consolifyf function and here are some numbers: %s\n", "hello", "testing", var=>console)
