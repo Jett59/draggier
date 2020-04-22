@@ -56,4 +56,23 @@ public String getString(String id) throws CompilationException{
 		throw new CompilationException("the object "+id+" does not exist or has no allocated bytes");
 	}
 }
+
+public void replaceInt(String id, int newValue) throws CompilationException {
+	int index = nameToLocation.get(id.hashCode());
+	memory.position(index);
+	int length = memory.get();
+	if(length == 4) {
+		memory.putInt(newValue);
+	}else {
+		throw new CompilationException("type mismatch: object "+id+" is not an int");
+	}
+}
+
+public void replaceString(String id, String newValue) throws CompilationException{
+	int index = nameToLocation.get(id.hashCode());
+	memory.position(index);
+	int length = memory.get();
+	memory.position(index).put((byte)(0-length));
+	allocateString(id, newValue);
+}
 }
