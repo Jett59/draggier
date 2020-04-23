@@ -12,3 +12,6 @@ var=>boolean:String:"false" <var
 consolifyln(var=>boolean)
 consolifyln(var=>console)
 consolify(var=>number)
+iter>var=>number {
+consolifyln("iterating")
+}
