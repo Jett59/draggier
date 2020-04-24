@@ -11,7 +11,11 @@ consolifyln(var=>boolean)
 var=>boolean:String:"false" <var
 consolifyln(var=>boolean)
 consolifyln(var=>console)
-consolify(var=>number)
-iter>var=>number {
-consolifyln("iterating")
+consolifyln(var=>number)
+var=>boolean:String:"true" <var
+if> var=>boolean: {
+consolifyf("boolean is %s\n", var=>boolean)
+}
+iter>var=>number: {
+consolifyln(var=>boolean)
 }

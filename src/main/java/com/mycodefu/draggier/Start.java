@@ -13,7 +13,8 @@ import com.mycodefu.draggier.sintax.*;
 
 public class Start {
 	private static final Body[] bodyTypes = new Body[] {
-			new Iter()
+			new Iter(),
+			new If()
 	};
 	private static final Sintax[] commands = new Sintax[] {
 			new Consolify(),
@@ -45,6 +46,7 @@ public static void main(String[] args) throws Exception {
 			if(line.contains(Body.BODY_CLOSE_CHAR)) {
 				readingBody = false;
 				body.run(commands, bodyLines, openingLine, memory);
+				bodyLines.clear();
 				continue;
 			}else {
 				bodyLines.add(line);

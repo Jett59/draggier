@@ -10,7 +10,7 @@ import com.mycodefu.draggier.sintax.Sintax;
 import com.mycodefu.draggier.variables.Variable;
 
 public class Iter implements Body{
-private final Pattern pattern = Pattern.compile("iter>(.*?) \\"+Body.BODY_OPEN_CHAR);
+private final Pattern pattern = Pattern.compile("iter>(.*?):");
 
 	@Override
 	public void run(Sintax[] commands, List<String> lines, String openingLine, MemoryStorage memory) throws CompilationException {
