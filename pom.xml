@@ -3,8 +3,16 @@
   <groupId>com.mycodefu</groupId>
   <artifactId>draggier</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  <properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <properties>
   <maven.compiler.target>11</maven.compiler.target>
   <maven.compiler.source>11</maven.compiler.source>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
