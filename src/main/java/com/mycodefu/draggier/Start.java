@@ -23,6 +23,11 @@ public class Start {
 	};
 
 public static void main(String[] args) throws Exception {
+	if(args.length < 1) {
+		throw new CompilationException("you must specify the file to run as an argument");
+	}else if(Files.notExists(Paths.get(args[0]))) {
+		throw new IllegalArgumentException("the file "+args[0]+"does not exist");
+	}
 	MemoryStorage memory = new MemoryStorage(1048576);
 	Assigner assigner = new Assigner();
 	List<String> code = Files.readAllLines(Paths.get(args[0]));
@@ -53,19 +58,13 @@ public static void main(String[] args) throws Exception {
 				continue;
 			}
 		}
-		boolean lineHasCommand = false;
 		if(line.startsWith("var")) {
 			assigner.assign(line, memory);
-			lineHasCommand = true;
 		}
 	for(Sintax command : commands) {
 		if(command.executeCommand(line, memory)) {
-			lineHasCommand = true;
 			break;
 		}
-	}
-	if(!lineHasCommand) {
-		throw new CompilationException("the line "+line+" has no valid lines");
 	}
 }
 }
