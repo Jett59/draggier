@@ -1,0 +1,3 @@
+consolify("Hello\n")
+var luke=>String: "Hi there" <var
+consolify(var=>luke)
