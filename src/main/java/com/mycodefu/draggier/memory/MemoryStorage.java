@@ -1,7 +1,6 @@
 package com.mycodefu.draggier.memory;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,6 @@ public class MemoryStorage {
         nameToLocation.put(id.hashCode(), nextIndex);
         memory.position(nextIndex);
         memory.put(Objects.INTEGER);
-        memory.put((byte) 4);
         memory.putInt(value);
         nextIndex = memory.position();
     }
@@ -39,7 +37,7 @@ public class MemoryStorage {
         nameToLocation.put(id.hashCode(), nextIndex);
         memory.position(nextIndex);
         memory.put(Objects.STRING);
-        memory.put((byte) bytes.length);
+        memory.putShort((short) bytes.length);
         memory.put(bytes);
         nextIndex = memory.position();
     }
@@ -61,13 +59,8 @@ public class MemoryStorage {
         int index = nameToLocation.get(id.hashCode());
         memory.position(index);
         byte type = memory.get();
-        int length = memory.get();
         if (type == Objects.INTEGER) {
-            if (length == 4) {
                 return memory.getInt();
-            } else {
-                throw new CompilationException("the object " + id + " does not have the valid number of bytes for an int: 4");
-            }
         } else if (type == Objects.STRING) {
             return Integer.parseInt(getString(id));
         } else {
@@ -81,20 +74,16 @@ public class MemoryStorage {
         byte type = memory.get();
         if (type == Objects.BOOL) {
             return Boolean.toString(getBoolean(id));
+        }else if(type == Objects.INTEGER) {
+        	return Integer.toString(getInt(id));
         }
-        int length = (int) memory.get();
+        short length = memory.getShort();
         if (length != 0) {
             String result;
             if (type == Objects.STRING) {
                 byte[] content = new byte[length];
                 memory.get(content, 0, length);
                 result = new String(content);
-            } else if (type == Objects.INTEGER) {
-                if (length == 4) {
-                    result = Integer.toString(memory.getInt());
-                } else {
-                    throw new CompilationException("any object of the type integer must have a length of 4");
-                }
             } else {
                 throw new CompilationException("the object " + id + " is invalid for the type String");
             }
@@ -119,13 +108,8 @@ public class MemoryStorage {
         int index = nameToLocation.get(id.hashCode());
         memory.position(index);
         byte type = memory.get();
-        int length = memory.get();
         if (type == Objects.INTEGER) {
-            if (length == 4) {
                 memory.putInt(newValue);
-            } else {
-                throw new CompilationException("all objects of the type integer must have a length of 4");
-            }
         } else {
             throw new CompilationException("type mismatch: object " + id + " is not an int");
         }
