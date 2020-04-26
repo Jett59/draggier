@@ -99,6 +99,8 @@ public class MemoryStorage {
         byte type = memory.get();
         if (type == Objects.BOOL) {
             memory.put((byte) (newValue ? 1 : 0));
+        }else if(type == Objects.STRING) {
+        	replaceString(id, Boolean.toString(newValue));
         } else {
             throw new CompilationException("the object " + id + " cannot be replaced by a boolean");
         }
@@ -110,6 +112,8 @@ public class MemoryStorage {
         byte type = memory.get();
         if (type == Objects.INTEGER) {
                 memory.putInt(newValue);
+        }else if(type == Objects.STRING) {
+        	replaceString(id, Integer.toString(newValue));
         } else {
             throw new CompilationException("type mismatch: object " + id + " is not an int");
         }
