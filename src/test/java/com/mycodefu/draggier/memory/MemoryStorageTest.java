@@ -7,6 +7,20 @@ import org.junit.jupiter.api.Test;
 
 public class MemoryStorageTest {
 
+@Test
+public void allocateBoolean_true() throws CompilationException{
+	MemoryStorage memoryStorage = new MemoryStorage(1024);
+	memoryStorage.allocateBoolean("test", true);
+	assertTrue(memoryStorage.getBoolean("test"));
+}
+
+@Test
+public void allocateBoolean_false() throws CompilationException{
+	MemoryStorage memoryStorage = new MemoryStorage(1024);
+	memoryStorage.allocateBoolean("test", false);
+	assertFalse(memoryStorage.getBoolean("test"));
+}
+
     @Test    
     public void allocateString_200chars() throws CompilationException {
         MemoryStorage memoryStorage = new MemoryStorage(1024);
