@@ -21,6 +21,20 @@ public void allocateBoolean_false() throws CompilationException{
 	assertFalse(memoryStorage.getBoolean("test"));
 }
 
+@Test
+public void allocateInt_0() throws CompilationException{
+	MemoryStorage memoryStorage = new MemoryStorage(1024);
+	memoryStorage.allocateInt("test", 0);
+	assertEquals(memoryStorage.getInt("test"), 0);
+}
+
+@Test
+public void allocateInt_max() throws CompilationException{
+	MemoryStorage memoryStorage = new MemoryStorage(1024);
+	memoryStorage.allocateInt("test", Integer.MAX_VALUE);
+	assertEquals(memoryStorage.getInt("test"), Integer.MAX_VALUE);
+}
+
     @Test    
     public void allocateString_200chars() throws CompilationException {
         MemoryStorage memoryStorage = new MemoryStorage(1024);
