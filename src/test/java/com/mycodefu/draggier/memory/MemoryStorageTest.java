@@ -87,4 +87,60 @@ public void allocateInt_max() throws CompilationException{
     	memoryStorage.allocateInt("test", 1048576);
     	assertEquals("1048576", memoryStorage.getString("test"));
     }
+    
+    @Test
+    public void replaceBoolean_replacingBoolean() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateBoolean("test", false);
+    	memoryStorage.replaceBoolean("test", true);
+    	assertTrue(memoryStorage.getBoolean("test"));
+    }
+    
+    @Test
+    public void replaceBoolean_replacingString() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateString("test", "abcdefghijklmnopqrstuvwxyz");
+    	memoryStorage.replaceBoolean("test", false);
+    	assertEquals("false", memoryStorage.getString("test"));
+    }
+    
+    @Test
+    public void replaceInt_replacingInt() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateInt("test", 512);
+    	memoryStorage.replaceInt("test", 1024);
+    	assertEquals(memoryStorage.getInt("test"), 1024);
+    }
+    
+    @Test
+    public void replaceInt_replacingString() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateString("test", "abcdefghijklmnopqrstuvwxyz");
+    	memoryStorage.replaceInt("test", 1024);
+    	assertEquals(memoryStorage.getString("test"), "1024");
+    }
+    
+    @Test
+    public void replaceString_replacingString() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateString("test", "abcdefghijklmnopqrstuvwxyz");
+    	memoryStorage.replaceString("test", "qwertyuiopasdfghjklzxcvbnm");
+    	assertEquals("qwertyuiopasdfghjklzxcvbnm", memoryStorage.getString("test"));
+    }
+    
+    @Test
+    public void replaceString_replacingBoolean() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateBoolean("test", false);
+    	memoryStorage.replaceString("test", "true");
+    	assertTrue(memoryStorage.getBoolean("test"));
+    }
+    
+    @Test
+    public void replaceString_replacingInt() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateInt("test", 512);
+    	memoryStorage.replaceString("test", "1024");
+    	assertEquals(memoryStorage.getInt("test"), 1024);
+    }
 }
