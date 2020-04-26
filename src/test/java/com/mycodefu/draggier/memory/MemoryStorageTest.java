@@ -167,7 +167,6 @@ public void allocateInt_max() throws CompilationException{
     	}
     	long finished = System.nanoTime();
     	long speed = (finished-now)/10000;
-    	System.out.println(speed);
     	assertTrue(speed < 1500, "int allocation is not fast enough, speed (nanos): "+speed);
     }
     
