@@ -143,4 +143,45 @@ public void allocateInt_max() throws CompilationException{
     	memoryStorage.replaceString("test", "1024");
     	assertEquals(memoryStorage.getInt("test"), 1024);
     }
+    
+    @Test
+    public void testBooleanAllocationSpeed() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1048576);
+    	int count = 0;
+    	long now = System.nanoTime();
+    	while(count++ <= 10000) {
+    		memoryStorage.allocateBoolean("test"+count, true);
+    	}
+    	long finished = System.nanoTime();
+    	long speed = (finished-now)/10000;
+    	assertTrue(speed < 1500, "boolean allocation is not fast enough, speed (nanos): "+speed);
+    }
+    
+    @Test
+    public void testIntAllocationSpeed() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1048576);
+    	int count = 0;
+    	long now = System.nanoTime();
+    	while(count++ <= 10000) {
+    		memoryStorage.allocateInt("test"+count, count);
+    	}
+    	long finished = System.nanoTime();
+    	long speed = (finished-now)/10000;
+    	System.out.println(speed);
+    	assertTrue(speed < 1500, "int allocation is not fast enough, speed (nanos): "+speed);
+    }
+    
+    @Test
+    public void testStringAllocationSpeed() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1048576);
+    	int count = 0;
+    	long now = System.nanoTime();
+    	while (count < 10000) {
+    		memoryStorage.allocateString("test"+count, "test"+count);
+    		count++;
+    	}
+    	long finished = System.nanoTime();
+    	long nanoSpeed = (finished-now)/10000;
+    	assertTrue(nanoSpeed < 10000, "string allocation is not fast enough, speed (nanos): "+nanoSpeed);
+    }
 }
