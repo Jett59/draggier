@@ -59,4 +59,32 @@ public void allocateInt_max() throws CompilationException{
     	memoryStorage.allocateString("test", testString);
     	assertEquals(testString, memoryStorage.getString("test"));
     }
+    
+    @Test
+    public void getBoolean_parsedFromString() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateString("test", "true");
+    	assertTrue(memoryStorage.getBoolean("test"));
+    }
+    
+    @Test
+    public void getInt_parsedFromString() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateString("test", "512");
+    	assertEquals(memoryStorage.getInt("test"), 512);
+    }
+    
+    @Test
+    public void getString_fromBoolean() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateBoolean("test", true);
+    	assertEquals("true", memoryStorage.getString("test"));
+    }
+    
+    @Test
+    public void getString_fromInt() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	memoryStorage.allocateInt("test", 1048576);
+    	assertEquals("1048576", memoryStorage.getString("test"));
+    }
 }
