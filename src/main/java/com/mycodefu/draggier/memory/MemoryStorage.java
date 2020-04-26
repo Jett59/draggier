@@ -140,4 +140,10 @@ public class MemoryStorage {
             throw new CompilationException("the object " + id + " cannot be replaced by a String");
         }
     }
+    
+    public void clear() {
+    	nameToLocation.clear();
+    	memory.clear();
+    	nextIndex = 1;
+    }
 }
