@@ -23,4 +23,12 @@ public class MemoryStorageTest {
     		memoryStorage.getString("test");
     	});
     }
+    
+    @Test
+    public void allocateString_accentedChars() throws CompilationException {
+    	MemoryStorage memoryStorage = new MemoryStorage(1024);
+    	String testString = "thìs ìs à tèst";
+    	memoryStorage.allocateString("test", testString);
+    	assertEquals(testString, memoryStorage.getString("test"));
+    }
 }
