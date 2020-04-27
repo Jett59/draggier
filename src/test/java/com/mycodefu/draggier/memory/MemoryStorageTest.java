@@ -3,6 +3,9 @@ package com.mycodefu.draggier.memory;
 import com.mycodefu.draggier.compilation.CompilationException;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+
 import org.junit.jupiter.api.Test;
 
 public class MemoryStorageTest {
@@ -146,41 +149,52 @@ public void allocateInt_max() throws CompilationException{
     
     @Test
     public void testBooleanAllocationSpeed() throws CompilationException {
-    	MemoryStorage memoryStorage = new MemoryStorage(1048576);
-    	int count = 0;
-    	long now = System.nanoTime();
-    	while(count++ <= 10000) {
-    		memoryStorage.allocateBoolean("test"+count, true);
-    	}
-    	long finished = System.nanoTime();
-    	long speed = (finished-now)/10000;
-    	assertTrue(speed < 1500, "boolean allocation is not fast enough, speed (nanos): "+speed);
+    	long speed = speedTest((count, memoryStorage)->{
+    		memoryStorage.allocateBoolean("test"+count.get(), true);
+    	});
+    	assertTrue(speed < 500, "boolean allocation is not fast enough, speed (nanos): "+speed);
     }
     
     @Test
     public void testIntAllocationSpeed() throws CompilationException {
-    	MemoryStorage memoryStorage = new MemoryStorage(1048576);
-    	int count = 0;
-    	long now = System.nanoTime();
-    	while(count++ <= 10000) {
-    		memoryStorage.allocateInt("test"+count, count);
-    	}
-    	long finished = System.nanoTime();
-    	long speed = (finished-now)/10000;
-    	assertTrue(speed < 1500, "int allocation is not fast enough, speed (nanos): "+speed);
+    	long speed = speedTest((count, memoryStorage)->{
+    		memoryStorage.allocateInt("test"+count.get(), count.get());
+    	});
+    	assertTrue(speed < 500, "int allocation is not fast enough, speed (nanos): "+speed);
     }
     
     @Test
     public void testStringAllocationSpeed() throws CompilationException {
+    	long speed = speedTest((count, memoryStorage)->{
+    		memoryStorage.allocateString("test"+count.get(), "test");
+    	});
+    	assertTrue(speed < 500, "string allocation is not fast enough, speed (nanos): "+speed);
+    }
+    
+    public long speedTest(BiConsumer<AtomicInteger, MemoryStorage> testAction) {
+    	long result = 0;
     	MemoryStorage memoryStorage = new MemoryStorage(1048576);
-    	int count = 0;
-    	long now = System.nanoTime();
-    	while (count < 10000) {
-    		memoryStorage.allocateString("test"+count, "test"+count);
-    		count++;
+		AtomicInteger count = new AtomicInteger();
+    	for(int i = 0; i < 10; i++) {
+    		while(count.addAndGet(1) <= 10000) {
+    			testAction.accept(count, memoryStorage);
+    		}
+    		memoryStorage.clear();
+			count.set(0);
     	}
-    	long finished = System.nanoTime();
-    	long nanoSpeed = (finished-now)/10000;
-    	assertTrue(nanoSpeed < 10000, "string allocation is not fast enough, speed (nanos): "+nanoSpeed);
+    	int iterations = 100;
+    	for(int i = 0; i < iterations; i++) {
+    		long now = System.nanoTime();
+    		while(count.addAndGet(1) < 10000) {
+    			testAction.accept(count, memoryStorage);
+    		}
+    		long finished = System.nanoTime();
+    		long speed = (finished-now)/10000;
+    		result+=speed;
+    		memoryStorage.clear();
+    		count.set(0);
+    	}
+    	result/=iterations;
+    	return result;
     }
 }
