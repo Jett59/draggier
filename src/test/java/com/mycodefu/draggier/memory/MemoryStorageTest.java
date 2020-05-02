@@ -183,7 +183,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     	memoryStorage.allocateBoolean("test", true);
     	});
-    	assertTrue(speed < 50, "getting booleans is too slow, speed (nanos): "+speed);
+    	assertTrue(speed < 500, "getting booleans is too slow, speed (nanos): "+speed);
     }
     
     @Test
@@ -225,8 +225,50 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateString("test", "512");
     	});
-    	assertTrue(speed < 500, "string getting is too slow, speed (nanos): "+speed);
+    	assertTrue(speed < 500, "int getting from string is too slow, speed (nanos): "+speed);
     }
+    
+    @Test
+    public void testGetStringFromStringSpeed() throws CompilationException {
+    	long speed = speedTest((count, memoryStorage)->{
+    		try {
+    			memoryStorage.getString("test");
+    		}catch(CompilationException e) {
+    			throw new IllegalStateException(e);
+    		}
+    	}, memoryStorage->{
+    		memoryStorage.allocateString("test", "testing");
+    	});
+    	assertTrue(speed < 500, "getting strings is too slow, speed (nanos): "+speed);
+    }
+    
+    @Test
+    public void testGetStringFromBooleanSpeed() throws CompilationException {
+    	long speed = speedTest((count, memoryStorage)->{
+    		try {
+    			memoryStorage.getString("test");
+    		}catch (CompilationException e) {
+    			throw new IllegalStateException(e);
+    		}
+    	}, memoryStorage->{
+    		memoryStorage.allocateBoolean("test", true);
+    	});
+    	assertTrue(speed < 500, "string getting speed is too slow, speed (nanos): "+speed);
+    }
+    
+    @Test
+    public void testGetStringFromIntSpeed() throws CompilationException {
+    	long speed = speedTest((count, memoryStorage)->{
+    		try {
+    			memoryStorage.getString("test");
+    		}catch(CompilationException e) {
+    			throw new IllegalStateException(e);
+    		}
+    	}, memoryStorage->{
+    		memoryStorage.allocateInt("test", 0);
+    	});
+    	assertTrue(speed < 500, "getting strings from ints is too slow, speed (nanos): "+speed);
+}
     
     public long speedTest(BiConsumer<AtomicInteger, MemoryStorage> testAction, Consumer<MemoryStorage> preparationFunction) {
     	long result = 0;
