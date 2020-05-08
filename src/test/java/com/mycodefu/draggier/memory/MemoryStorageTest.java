@@ -153,6 +153,7 @@ public void allocateInt_max() throws CompilationException{
     	long speed = speedTest((count, memoryStorage)->{
     		memoryStorage.allocateBoolean("test"+count.get(), true);
     	});
+    	System.out.println("allocateBoolean (nanos): "+speed);
     	assertTrue(speed < 500, "boolean allocation is not fast enough, speed (nanos): "+speed);
     }
     
@@ -161,6 +162,7 @@ public void allocateInt_max() throws CompilationException{
     	long speed = speedTest((count, memoryStorage)->{
     		memoryStorage.allocateInt("test"+count.get(), count.get());
     	});
+    	System.out.println("allocateInt (nanos): "+speed);
     	assertTrue(speed < 500, "int allocation is not fast enough, speed (nanos): "+speed);
     }
     
@@ -169,6 +171,7 @@ public void allocateInt_max() throws CompilationException{
     	long speed = speedTest((count, memoryStorage)->{
     		memoryStorage.allocateString("test"+count.get(), "test");
     	});
+    	System.out.println("allocateString (nanos): "+speed);
     	assertTrue(speed < 500, "string allocation is not fast enough, speed (nanos): "+speed);
     }
     
@@ -183,6 +186,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     	memoryStorage.allocateBoolean("test", true);
     	});
+    	System.out.println("getBoolean_fromBoolean (nanos): "+speed);
     	assertTrue(speed < 500, "getting booleans is too slow, speed (nanos): "+speed);
     }
     
@@ -197,6 +201,7 @@ public void allocateInt_max() throws CompilationException{
 	}, memoryStorage->{
 	memoryStorage.allocateString("test", "true");
 	});
+    	System.out.println("getBoolean_fromString (nanos): "+speed);
     	assertTrue(speed < 500, "getting booleans from strings is too slow, speed (nanos): "+speed);
     }
     
@@ -211,6 +216,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateInt("test", Integer.MAX_VALUE);
     	});
+    	System.out.println("getInt_fromInt (nanos): "+speed);
     	assertTrue(speed < 50, "int getting speed is too slow, speed (nanos): "+speed);
     }
     
@@ -225,6 +231,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateString("test", "512");
     	});
+    	System.out.println("getInt_fromString (nanos): "+speed);
     	assertTrue(speed < 500, "int getting from string is too slow, speed (nanos): "+speed);
     }
     
@@ -239,6 +246,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateString("test", "testing");
     	});
+    	System.out.println("getString_fromString (nanos): "+speed);
     	assertTrue(speed < 500, "getting strings is too slow, speed (nanos): "+speed);
     }
     
@@ -253,6 +261,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateBoolean("test", true);
     	});
+    	System.out.println("getString_fromBoolean (nanos): "+speed);
     	assertTrue(speed < 500, "string getting speed is too slow, speed (nanos): "+speed);
     }
     
@@ -267,6 +276,7 @@ public void allocateInt_max() throws CompilationException{
     	}, memoryStorage->{
     		memoryStorage.allocateInt("test", 0);
     	});
+    	System.out.println("getString_fromInt (nanos): "+speed);
     	assertTrue(speed < 500, "getting strings from ints is too slow, speed (nanos): "+speed);
 }
     
