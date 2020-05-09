@@ -18,7 +18,21 @@ Matcher matcher = pattern.matcher(openingLine);
 if(matcher.find()) {
 	boolean shouldRun = false;
 	String predicate = matcher.group(1);
-	if(Variable.isVariableReference(predicate)) {
+	if(predicate.contains(" == ")) {
+		String[] sides = predicate.split(" == ");
+		boolean expected, actual;
+		if(Variable.isVariableReference(sides[0])) {
+			actual = memory.getBoolean(Variable.getVariableName(sides[0]));
+		}else {
+			throw new CompilationException("the left hand side of an if statement must be a variable");
+		}
+		if(Variable.isVariableReference(sides[1])) {
+			expected = memory.getBoolean(Variable.getVariableName(sides[1]));
+		}else {
+			expected = Boolean.parseBoolean(sides[1]);
+		}
+		shouldRun = expected == actual;
+	}else if(Variable.isVariableReference(predicate)) {
 		shouldRun = memory.getBoolean(Variable.getVariableName(predicate));
 	}else {
 		throw new CompilationException("the statememnt "+predicate+" is undefined");

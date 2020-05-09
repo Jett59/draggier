@@ -12,9 +12,12 @@ var=>boolean:String:"false" <var
 consolifyln(var=>boolean)
 consolifyln(var=>console)
 consolifyln(var=>number)
-var=>boolean:String:"true" <var
+var=>boolean:String:"false" <var
 if> var=>boolean: {
-consolifyf("boolean is %s\n", var=>boolean)
+consolifyln("boolean is true")
+}
+if> var=>boolean == false: {
+consolifyln("boolean is false")
 }
 iter>var=>number: {
 consolifyln(var=>boolean)
