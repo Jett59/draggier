@@ -27,3 +27,6 @@ hs_err_pid*
 target/
 .project
 .classpath
+
+#generated java code from draggier
+*generatedJava/

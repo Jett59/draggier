@@ -217,7 +217,7 @@ public void allocateInt_max() throws CompilationException{
     		memoryStorage.allocateInt("test", Integer.MAX_VALUE);
     	});
     	System.out.println("getInt_fromInt (nanos): "+speed);
-    	assertTrue(speed < 50, "int getting speed is too slow, speed (nanos): "+speed);
+    	assertTrue(speed < 500, "int getting speed is too slow, speed (nanos): "+speed);
     }
     
     @Test
