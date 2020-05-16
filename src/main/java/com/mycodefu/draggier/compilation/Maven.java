@@ -14,15 +14,15 @@ public void mavenCompile(String projectPath, String mainClassPath) {
 			String defaultPom = getDefaultPom();
 			defaultPom = defaultPom.replace("-----insert main class here-----", mainClassPath);
 			Files.write(Paths.get(projectPath+"\\pom.xml"), defaultPom.getBytes(StandardCharsets.UTF_8));
-	ProcessBuilder draggierInstall = new ProcessBuilder("mvn.cmd", "install");
-	ProcessBuilder p = new ProcessBuilder("mvn.cmd", "package");
+	ProcessBuilder draggierInstall = new ProcessBuilder(mavenCommandPath(), "install");
+	ProcessBuilder p = new ProcessBuilder(mavenCommandPath(), "package");
 		draggierInstall.redirectOutput(new File("maven-install.log"));
 		System.out.println("installing draggier");
 		long now = System.nanoTime();
 		draggierInstall.start().waitFor();
 		long finished = System.nanoTime();
 		System.out.println("installed draggier, time: "+((finished-now)/1000000000d)+"s");
-		ProcessBuilder mavenCompile = new ProcessBuilder("mvn.cmd", "compile");
+		ProcessBuilder mavenCompile = new ProcessBuilder(mavenCommandPath(), "compile");
 		mavenCompile.directory(new File(projectPath));
 		System.out.println("compiling draggier project");
 		now = System.nanoTime();
@@ -55,5 +55,38 @@ public String getDefaultPom() {
 throw new CompilationException(e);
 	}
 			return new String(bytes, StandardCharsets.UTF_8);
+}
+
+public static String mavenCommandPath() {
+	String result;
+	String os = System.getProperty("os.name");
+	System.out.println(os);
+	switch(Os.forName(os)) {
+	case win: {
+		result = "mvn.cmd";
+		break;
+	}
+	default:
+		throw new RuntimeException("no valid case statement for os "+os);
+	}
+	return result;
+}
+
+public static enum Os {
+	win("windows 10");
+private String displayName;
+
+private Os(String displayName) {
+	this.displayName = displayName;
+}
+
+public static Os forName(String name) {
+	for(Os value : Os.values()) {
+		if(value.displayName == name) {
+			return value;
+		}
+	}
+	throw new IllegalArgumentException(name+" is not a valid os");
+}
 }
 }
