@@ -10,19 +10,38 @@ import java.nio.file.Paths;
 public class Maven {
 public void mavenCompile(String projectPath, String mainClassPath) {
 	try {
-	if(Files.notExists(Paths.get(projectPath+"\\pom.xml"))) {
+		Files.deleteIfExists(Paths.get(projectPath+"\\pom.xml"));
 			String defaultPom = getDefaultPom();
 			defaultPom = defaultPom.replace("-----insert main class here-----", mainClassPath);
 			Files.write(Paths.get(projectPath+"\\pom.xml"), defaultPom.getBytes(StandardCharsets.UTF_8));
-	}
 	ProcessBuilder draggierInstall = new ProcessBuilder("mvn.cmd", "install");
-	ProcessBuilder p = new ProcessBuilder("mvn.cmd", "clean", "package");
+	ProcessBuilder p = new ProcessBuilder("mvn.cmd", "package");
 		draggierInstall.redirectOutput(new File("maven-install.log"));
-		draggierInstall.start();
+		System.out.println("installing draggier");
+		long now = System.nanoTime();
+		draggierInstall.start().waitFor();
+		long finished = System.nanoTime();
+		System.out.println("installed draggier, time: "+((finished-now)/1000000000d)+"s");
+		ProcessBuilder mavenCompile = new ProcessBuilder("mvn.cmd", "compile");
+		mavenCompile.directory(new File(projectPath));
+		System.out.println("compiling draggier project");
+		now = System.nanoTime();
+		Process mavenCompileProcess = mavenCompile.start();
+		mavenCompileProcess.waitFor();
+		finished = System.nanoTime();
+		System.out.println("finished compile, time: "+((finished-now)/1000000000d)+"s");
+		if(mavenCompileProcess.exitValue() != 0) {
+			System.out.println(new String(mavenCompileProcess.getErrorStream().readAllBytes()));
+			throw new CompilationException("error: maven compile failed");
+		}
 		p.redirectOutput(new File("maven.log"));
 		p.directory(new File(projectPath));
-		p.start();
-	} catch (IOException e) {
+		System.out.println("packaging draggier project");
+		now = System.nanoTime();
+		p.start().waitFor();
+		finished = System.nanoTime();
+		System.out.println("packaged draggier project, time: "+((finished-now)/1000000000d)+"s");
+	} catch (Exception e) {
 		throw new CompilationException(e);
 	}
 	}

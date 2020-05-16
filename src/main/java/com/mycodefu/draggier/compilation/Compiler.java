@@ -25,6 +25,7 @@ public static void compile(String projectDir, String mainClass, Importer importe
 	System.out.println("compiling "+mainClassPath);
 	if(Files.exists(Paths.get(mainClassPath))) {
 		try {
+			long start = System.nanoTime();
 			List<String> lines = Files.readAllLines(Paths.get(mainClassPath));
 			List<String> output = new ArrayList<>();
 			ClassConfig classConfig = classDefiner.findClass(lines);
@@ -46,9 +47,6 @@ public static void compile(String projectDir, String mainClass, Importer importe
 			}
 			finalCode.add("}");
 			System.out.println("compiled to java:");
-			for(String line : finalCode) {
-				System.out.println(line);
-			}
 			StringBuilder generatedJavaPath = new StringBuilder()
 					.append(projectDir)
 					.append("\\generatedJava");
@@ -78,6 +76,9 @@ public static void compile(String projectDir, String mainClass, Importer importe
 			System.out.println("running maven build");
 			maven.mavenCompile(generatedJavaPath.toString(), packageConfig.getName()+"."+classConfig.getName());
 			System.out.println("maven built");
+			long finished = System.nanoTime();
+			System.out.println("build success!");
+			System.out.println("total time: "+((finished-start)/1000000000d)+"s");
 		} catch (IOException e) {
 			throw new CompilationException(e);
 		}

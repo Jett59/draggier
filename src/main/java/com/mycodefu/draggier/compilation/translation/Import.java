@@ -16,10 +16,8 @@ public class Import implements Translator{
 
 	@Override
 	public void translate(String line, Importer importer, List<String> output) {
-		System.out.println("translating "+line);
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()) {
-			System.out.println("matched");
 			importer.importClass(matcher.group(1));
 		}
 	}
