@@ -24,6 +24,7 @@ public void mavenCompile(String projectPath, String mainClassPath) {
 		System.out.println("installed draggier, time: "+((finished-now)/1000000000d)+"s");
 		ProcessBuilder mavenCompile = new ProcessBuilder(mavenCommandPath(), "compile");
 		mavenCompile.directory(new File(projectPath));
+		mavenCompile.redirectOutput(new File("maven-compile.log"));
 		System.out.println("compiling draggier project");
 		now = System.nanoTime();
 		Process mavenCompileProcess = mavenCompile.start();
@@ -82,7 +83,7 @@ private Os(String displayName) {
 
 public static Os forName(String name) {
 	for(Os value : Os.values()) {
-		if(value.displayName == name) {
+		if(value.displayName.equalsIgnoreCase(name)) {
 			return value;
 		}
 	}

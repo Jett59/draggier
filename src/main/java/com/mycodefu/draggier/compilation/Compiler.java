@@ -15,6 +15,7 @@ public class Compiler {
 	private static Translator[] translators = new Translator[] {
 			new Import(),
 			new MainMethod(),
+			new PrimitiveInitialiser(),
 			new Instance(),
 			new JavaFunctionRunner(),
 			new CloseBody()

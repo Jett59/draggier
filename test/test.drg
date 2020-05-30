@@ -6,4 +6,5 @@ $class Test
  main:
   run: System: out.println - ("this is a test!")
   new :: MemoryStorage - (1048576) memoryStorage
+  priminit :: boolean - (true) test
 ;
