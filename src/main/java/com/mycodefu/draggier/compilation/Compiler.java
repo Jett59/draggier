@@ -1,5 +1,6 @@
 package com.mycodefu.draggier.compilation;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,7 +22,7 @@ public class Compiler {
 			new CloseBody()
 	};
 
-public static void compile(String projectDir, String mainClass, Importer importer, ClassDefiner classDefiner, PackageDefiner packageDefiner, Maven maven) {
+public static void compile(String projectDir, String mainClass, Importer importer, ClassDefiner classDefiner, PackageDefiner packageDefiner, Maven maven, JarCopier copier) {
 	String mainClassPath = projectDir+"\\"+mainClass;
 	System.out.println("compiling "+mainClassPath);
 	if(Files.exists(Paths.get(mainClassPath))) {
@@ -77,6 +78,8 @@ public static void compile(String projectDir, String mainClass, Importer importe
 			System.out.println("running maven build");
 			maven.mavenCompile(generatedJavaPath.toString(), packageConfig.getName()+"."+classConfig.getName());
 			System.out.println("maven built");
+			String jarPath = String.format("%s\\target\\release-directory\\draggier-project.jar", generatedJavaPath.toString());
+			copier.copyJar(jarPath);
 			long finished = System.nanoTime();
 			System.out.println("build success!");
 			System.out.println("total time: "+((finished-start)/1000000000d)+"s");

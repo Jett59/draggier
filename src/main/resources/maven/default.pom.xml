@@ -55,5 +55,6 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>draggier-project</finalName>
     </build>
 </project>

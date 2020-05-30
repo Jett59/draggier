@@ -1,6 +1,7 @@
 package com.mycodefu.draggier;
 
 import com.mycodefu.draggier.compilation.ClassDefiner;
+import com.mycodefu.draggier.compilation.JarCopier;
 import com.mycodefu.draggier.compilation.Maven;
 import com.mycodefu.draggier.compilation.PackageDefiner;
 import com.mycodefu.draggier.compilation.imports.Importer;
@@ -12,7 +13,7 @@ public class Start {
 			for(int i = 0; i < args.length; i++) {
 				String arg = args[i];
 				if(arg.equalsIgnoreCase("-compile")) {
-					com.mycodefu.draggier.compilation.Compiler.compile(args[(++i)], args[++i], new Importer(), new ClassDefiner(), new PackageDefiner(), new Maven());
+					com.mycodefu.draggier.compilation.Compiler.compile(args[(++i)], args[++i], new Importer(), new ClassDefiner(), new PackageDefiner(), new Maven(), new JarCopier());
 				}
 			}
 		}else {
